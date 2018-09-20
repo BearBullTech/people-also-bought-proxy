@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" href="/style.css"> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <style>
+      .day {
+        background: #fff;
+        color: #000;
+      }
+      .night {
+        background: #1b1b1d;
+        color: #fff !important;
+      }
+      .night h2,
+      .night h1 {
+        color: #fff;
+      }
+
+      .component-containerClosed {
+          background-color: #1B1B1D;
+          padding: 0% !important;
+      }
+      .main-head > h2 {
+        color: #fff;
+      }
+      .flex-container {
+        margin-left: 0 !important;
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.15/css/uikit.min.css" />
+    <title>RobinHackers</title>
+  </head>
+  <body>
+    <img src="header.png" alt="">
+    <div className="parent-container">
+      <div id="stockFlucuation"></div>
+      <div id="stock-price-points"></div>
+      <div id="peopleAlsoBought"></div>
+      <div id="navigationBar"></div>
+    </div>
+    <script src="/lib/react.development.js"></script>
+    <script src="/lib/react-dom.development.js"></script>
+    <script src="http://localhost:3001/bundle.js"></script>
+    <script src="http://localhost:3002/bundle.js"></script>
+    <script src="http://localhost:3003/bundle.js"></script>
+    <script src="http://localhost:3004/bundle.js"></script>
+    <script>
+      let body = document.querySelector('body');
+      let date = moment();
+      let beg = moment("09:00", "HH:mm");
+      let end = moment("15:00", "HH:mm");
+      if (date.isBetween(beg, end)) {
+        body.classList.add('day');
+        body.classList.remove('night');
+      } else {
+        body.classList.remove('day');
+        body.classList.add('night');
+      }
+    </script>
+    <!-- see: https://reactjs.org/docs/react-without-jsx.html -->
+    <script>
+      ReactDOM.render(
+        React.createElement(stockFlucuation),
+        document.getElementById('stockFlucuation')
+      );
+      ReactDOM.render(
+        React.createElement(stock-price-points),
+        document.getElementById('stock-price-points')
+      );
+      ReactDOM.render(
+        React.createElement(peopleAlsoBought),
+        document.getElementById('peopleAlsoBought')
+      );
+      ReactDOM.render(
+        React.createElement(navigationBar),
+        document.getElementById('navigationBar')
+      );
+    </script>
+  </body>
+</html>
