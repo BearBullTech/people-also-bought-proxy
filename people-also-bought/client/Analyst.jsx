@@ -11,7 +11,7 @@ const Analyst = ({ tooltip, display, marketisOpen }) => (
       </span>
     </p>
     <ReactTooltip
-      className="tooltip"
+      className="tooltips"
       place="bottom"
       type="dark"
       effect="solid"

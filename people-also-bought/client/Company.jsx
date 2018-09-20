@@ -16,7 +16,7 @@ const Company = ({
         <span>
           <Analyst
             display={`${company.percentage}%`}
-            tooltips={`${company.percentage}% anaylsts agree that
+            tooltip={`${company.percentage}% anaylsts agree that
         ${company.company} is a buy.`}
             marketisOpen={marketisOpen}
           />
