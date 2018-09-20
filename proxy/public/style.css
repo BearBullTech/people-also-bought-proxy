@@ -1,3 +1,7 @@
 .parent-container {
   padding: 40px 80px 20px;
 }
+
+.image-header {
+  display: fixed;
+}
