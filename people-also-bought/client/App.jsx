@@ -12,8 +12,8 @@ class App extends React.Component {
     this.state = {
       companies: [],
       currentCompanies: [],
-      currentPrices: [43.25, 75.23, 98.12, 312.12],
-      currentPercentages: [14.23, 18.23, 45.23, 38.12],
+      currentPrices: [],
+      currentPercentages: [],
       min: 1,
       max: 8,
       marketisOpen: true,
@@ -29,16 +29,34 @@ class App extends React.Component {
     const isOpen = moment('9:00', 'hh:mm');
     const isClosed = moment('15:00', 'hh:mm');
     const marketisOpen = (time.isBetween(isOpen, isClosed));
-    this.setState({ marketisOpen });
-    axios.get('http://localhost:3003/people-also-bought', {
-      params: {
-        group: this.getRandomIntInclusive(1, 8),
-      },
-    })
+    this.setState({
+      marketisOpen,
+    });
+
+    axios.get(`/api/people-also-bought${location.pathname}`)
       .then((res) => {
+        function percentDiff(priceOne, priceTwo) {
+          return (((priceTwo - priceOne) / priceOne) * 100);
+        }
         this.setState({
           companies: res.data,
           currentCompanies: res.data.slice(0, 4),
+          currentPrices: [
+            res.data[0].currentDay[0].currentPrice,
+            res.data[1].currentDay[0].currentPrice,
+            res.data[2].currentDay[0].currentPrice,
+            res.data[3].currentDay[0].currentPrice,
+          ],
+          currentPercentages: [
+            percentDiff(res.data[0].currentDay[0].currentPrice,
+              res.data[0].currentDay[1].currentPrice).toFixed(2),
+            percentDiff(res.data[1].currentDay[0].currentPrice,
+              res.data[1].currentDay[1].currentPrice).toFixed(2),
+            percentDiff(res.data[2].currentDay[0].currentPrice,
+              res.data[2].currentDay[1].currentPrice).toFixed(2),
+            percentDiff(res.data[3].currentDay[0].currentPrice,
+              res.data[3].currentDay[1].currentPrice).toFixed(2),
+          ],
         });
         this.updateData();
       })

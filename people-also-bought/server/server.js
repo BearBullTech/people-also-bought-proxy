@@ -5,7 +5,6 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const Company = require('../database/index.js');
 const handleListen = require('./handleListen.js');
-// const peoplebought = require('./router/peoplebought')
 
 mongoose.connect('mongodb://localhost/people-also-bought', { useNewUrlParser: true }, (err) => {
   console.log(err || 'MongoDB connected');
@@ -25,22 +24,41 @@ app.use((req, res, next) => {
   next();
 });
 
-function getRandomIntInclusive(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+// app.get('/:company', (req, res) => {
+//   // console.log('REQ', req);
+//   const { company } = req.params;
+//   Company.find({ company }, null, (err, result) => {
+//     if (err) {
+//       res.status('302').send(err);
+//     }
+//     // console.log('RESULT', result);
+//     return res.json(result);
+//   });
+// });
 
-app.get('/people-also-bought', (req, res) => {
-  Company.find({ group: getRandomIntInclusive(1, 8) }).exec((err, results) => {
+app.get('/api/people-also-bought/:company', (req, res) => {
+  const { company } = req.params;
+  Company.find({ company }, null, (err, result) => {
     if (err) {
-      res.send(err);
+      console.log('find company error');
     } else {
-      res.json(results);
+      let group = result[0].group;
+      console.log('this is groups', group)
+      if (group === 8) {
+        group = 1;
+      } else {
+        group += 1;
+      }
+      Company.find({ group }, null, (err, result) => {
+        if (err) {
+          res.status('302').send(err);
+        } else {
+          res.json(result);
+        }
+      });
     }
   });
 });
 
-// app.listen(PORT, () => {
-//   console.log("Listening to port: ", PORT)
-// })
 
 app.listen(PORT, handleListen(console.log, PORT));

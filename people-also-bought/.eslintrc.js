@@ -21,5 +21,6 @@ module.exports = {
       "components": [ "Link" ],
       "specialLink": [ "to" ],
     }],
+    "prefer-destructuring": ["error", {"object": false, "array": false}]
   },
 };

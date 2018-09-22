@@ -1,42 +1,60 @@
-var test = function(x) {
-    var results = [];
-    for (var i = 0; i < x; i++ ) {
-        var obj = {
-            company: faker.company.companyName(),
-            currentDay: timesAndPrice(),
-            }
-        results.push(JSON.stringify(obj));
-    }
-    return results;
+const fs = require('fs');
+const path = require('path');
+const companyArray = require('./companyID.js');
+
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function timesAndPrice() {
-    var x = 10;
-    var times = [];
-    var startTime = 540;
-    var ap = ['am', 'pm'];
+  const x = 10;
+  const times = [];
+  let tt = 360;
+  const ap = ['am', 'pm'];
 
-    for (var i = 0; startTime < 18.05*60; i++) {
-
-        var hh = Math.floor(startTime/60);
-        var mm = (startTime%60);
-      var tempObj = {};
-      tempObj['currentTime'] = ("0" + (hh%12)).slice(-2) + ":" + ("0" + mm).slice(-2) + ap[Math.floor(hh/12)];
-      tempObj['currentPrice'] = parseFloat(((Math.random() * Math.floor(500)) + 50).toFixed(2)); 
-        times.push(tempObj);
-        startTime = startTime + x;
-    }
-    return times;
+  for (let i = 0; tt < 15.1 * 60; i++) {
+    const hh = Math.floor(tt / 60);
+    const mm = (tt % 60);
+    const tempObj = {};
+    tempObj.currentTime = `${(`0${hh % 12}`).slice(-2)}:${(`0${mm}`).slice(-2)}${ap[Math.floor(hh / 12)]}`;
+    tempObj.currentPrice = parseFloat(((Math.random() * Math.floor(500)) + 50).toFixed(2));
+    times.push(tempObj);
+    // times.push(JSON.stringify(tempObj));
+    tt += x;
+  }
+  return times;
 }
 
+const test = (x) => {
+  const results = [];
+  const groups = [1, 2, 3, 4, 5, 6, 7, 8];
+  let j = 0;
+  for (let i = 0; i < x; i++) {
+    if (j === 8) {
+      j = 0;
+    }
+    const obj = {
+      _id: companyArray[i]._id,
+      company: companyArray[i].companyName,
+      companyAbbr: companyArray[i].companyAbbriev,
+      percentage: getRandomIntInclusive(1, 99),
+      group: groups[j],
+      currentDay: timesAndPrice(),
+    };
+    j++;
+    results.push(obj);
+  }
+  return results;
+};
 
+const output = test(100);
 
-var output = test(99);
-console.log(output)
-
-
-
-
-
-// hacker: faker.hacker.abbreviation() => shows abbreviations if we want to use it for Stock 
-// faker.finance.amount(); => another way to show the random prices 
+fs.writeFile(
+  path.join(__dirname, 'companies.json'),
+  JSON.stringify(output),
+  (err) => {
+    if (err) return console.log(err);
+  },
+);

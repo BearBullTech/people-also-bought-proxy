@@ -33,7 +33,7 @@ app.get('/data/company/:company', (req, res) => {
   });
 });
 
-app.get('/data/companies', (req, res) => {
+app.get('/:companies', (req, res) => {
   // const { id } = req.params;
   // database.Company.find({ _id: id }, null, (err, result) => {
   database.Company.find({}, null, (err, result) => {

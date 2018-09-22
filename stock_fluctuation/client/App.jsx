@@ -50,7 +50,7 @@ class App extends Component {
     setInterval(() => this.checkTime(), 1000);
 
     axios
-      .get('http://localhost:3001/api')
+      .get(`/api/graph${location.pathname}`)
       .then(res => res.data)
       .then(data => {
         const company = data[3];

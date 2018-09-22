@@ -34,7 +34,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:3004/stocks/sideBar')
+    axios.get(`/stocks/sideBar${location.pathname}`)
       .then((res) => {
         const data = res.data;
         this.setState({
