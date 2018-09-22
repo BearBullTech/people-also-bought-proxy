@@ -24,18 +24,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.get('/:company', (req, res) => {
-//   // console.log('REQ', req);
-//   const { company } = req.params;
-//   Company.find({ company }, null, (err, result) => {
-//     if (err) {
-//       res.status('302').send(err);
-//     }
-//     // console.log('RESULT', result);
-//     return res.json(result);
-//   });
-// });
-
 app.get('/api/people-also-bought/:company', (req, res) => {
   const { company } = req.params;
   Company.find({ company }, null, (err, result) => {

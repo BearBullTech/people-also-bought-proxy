@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import StickyBox from 'react-sticky-box';
 import DropDownMenu from './components/DropDownMenu/DropDownMenu.jsx';
 import MarketOrder from './components/MarketOrder.jsx';
 import LimitOrder from './components/LimitOrder.jsx';
@@ -148,7 +147,6 @@ class App extends React.Component {
       />
     }
   }
-
 
   showMenu(event) {
     event.preventDefault();
