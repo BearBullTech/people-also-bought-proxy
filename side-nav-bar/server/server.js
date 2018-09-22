@@ -24,33 +24,55 @@ app.get('/:company', function(req, res) {
 
 mongoose.connect('mongodb://localhost/fecdata', {useNewUrlParser: true}, (err) => {
 	console.log(err||"mongoDB connected!")
-})
+});
 
 
-app.get('/stocks/sideBar', function(req, res) {
-  db.find({}, function(err, results) {
-  	if (err) {
-  		return console.log(err)
-  	} else {
-  	res.json(results)
-  }
-  })
-})
+// app.get('/api/sideBar', function(req, res) {
+//   db.find({}, function(err, results) {
+//   	if (err) {
+//   		return console.log(err)
+//   	} else {
+//   	res.json(results)
+//   }
+//   })
+// })
 
-app.get('/stocks/sideBar/:company', (req, res) => {
-  const company = req.params.company;
-  db.find({ company }, null, (err, result) => {
+// app.get('/api/sideBar/:companyName', (req, res) => {
+//   const company = req.params.companyName;
+//   db.find({ companyName: company }, (err, company) => {
+//     if (err) {
+//       return console.log(err);
+//     }
+//     res.json(company);
+//   });
+// }
+
+app.get('/api/sideBar/:companyName', (req, res) => {
+  const company = req.params.companyName;
+  console.log(company);
+  db.find({ companyName: company }, null, (err, company) => {
     if (err) {
-      return console.log('callback error');
+      res.status('302').send(err);
     }
-    console.log(req.params)
-    return res.json(result);
-  })
-})
+    // console.log('RESULT', result);
+    return res.json(company);
+  });
+});
 
-app.use('/stocks/sideBar', sideBar);
+// app.get('/api/sideBar/:company', (req, res) => {
+//   const company = req.params.company;
+//   db.find({ company }, null, (err, result) => {
+//     if (err) {
+//       return console.log('callback error');
+//     }
+//     console.log(req.params)
+//     return res.json(result);
+//   })
+// })
+
+app.use('/api/sideBar', sideBar);
 
 
 app.listen(PORT, () => {
-  console.log("Listening to port: ", PORT)
-})
+  console.log("Listening to port: ", PORT);
+});

@@ -17,33 +17,32 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/:company', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
+// app.get('/:company', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../public/index.html'));
+// });
 
-app.get('/data/company/:company', (req, res) => {
+app.get('/api/stockPricePoints/:company', (req, res) => {
   const { company } = req.params;
 
   database.Company.find({ company }, null, (err, result) => {
     if (err) {
       return console.log('CALLBACK ERROR!');
     }
-    console.log(req.params);
     return res.json(result);
   });
 });
 
-app.get('/:companies', (req, res) => {
-  // const { id } = req.params;
-  // database.Company.find({ _id: id }, null, (err, result) => {
-  database.Company.find({}, null, (err, result) => {
-    if (err) {
-      return console.log('CALLBACK ERROR!');
-    }
-    console.log(req.params);
-    return res.json(result);
-  });
-});
+// app.get('/api/company/:companies', (req, res) => {
+//   // const { id } = req.params;
+//   // database.Company.find({ _id: id }, null, (err, result) => {
+//   database.Company.find({}, null, (err, result) => {
+//     if (err) {
+//       return console.log('CALLBACK ERROR!');
+//     }
+//     console.log(req.params);
+//     return res.json(result);
+//   });
+// });
 
 module.exports = {
   app,

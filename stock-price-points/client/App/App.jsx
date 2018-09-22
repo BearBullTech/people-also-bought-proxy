@@ -37,7 +37,7 @@ class App extends React.Component {
     };
 
     this.getDataSetInitialState = () => {
-      axios.get(`/data/company${location.pathname}`)
+      axios.get(`/api/stockPricePoints${location.pathname}`)
         .then((output) => {
           const { data } = output;
           const { yearly, currentPrice } = data[0];

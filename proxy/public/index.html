@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
     <style>
       .day {
         background: #fff;
@@ -28,20 +28,21 @@
       .flex-container {
         margin-left: 0 !important;
       }
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.15/css/uikit.min.css" />
     <title>RobinHackers</title>
   </head>
   <body>
     <div className="parent-container">
-        <img class="image-header" src="header.png" alt="">
-      <div id="stockFlucuation"></div>
-      <div id="stock-price-points"></div>
-      <div id="peopleAlsoBought"></div>
-      <div id="navigationBar"></div>
+      <img class="image-header" src="header.png" alt="">
+    <div id="app"></div>
+    <div id="mainChart"></div>
+    <div id="peopleAlsoBought"></div>
+    <div id="navigationBar"></div>
     </div>
-    <script src="/lib/react.development.js"></script>
-    <script src="/lib/react-dom.development.js"></script>
+    <script src="./lib/react.development.js"></script>
+    <script src="./lib/react-dom.development.js"></script>
 
     <script src="https://s3.amazonaws.com/proxy-project/bundle.js"></script>
     <script src="https://s3-us-west-1.amazonaws.com/microservice-stock/bundle.js"></script>
@@ -55,6 +56,7 @@
     <script>
       let body = document.querySelector('body');
       let img = document.querySelector('.image-header');
+
       let date = moment();
       let beg = moment("09:00", "HH:mm");
       let end = moment("15:00", "HH:mm");
@@ -70,12 +72,12 @@
     <!-- see: https://reactjs.org/docs/react-without-jsx.html -->
     <script>
       ReactDOM.render(
-        React.createElement(stockFlucuation),
-        document.getElementById('stockFlucuation')
+        React.createElement(app),
+        document.getElementById('app')
       );
       ReactDOM.render(
-        React.createElement(stock-price-points),
-        document.getElementById('stock-price-points')
+        React.createElement(mainChart),
+        document.getElementById('mainChart')
       );
       ReactDOM.render(
         React.createElement(peopleAlsoBought),

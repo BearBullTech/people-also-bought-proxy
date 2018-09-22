@@ -11,7 +11,7 @@ module.exports = {
   },
 
   fetchCompany: (req, res) => {
-    const company = req.params.company_name.split('-').join(' ');
+    const company = req.params.company_name;
     Company.find({ company: company }, (err, company) => {
       if (err) return console.log(err);
       res.json(company);

@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/:company', express.static(path.join(__dirname, 'public')));
 
 app.use('/api/graph/', proxy({target:'http://localhost:3001'}));
-app.use('/api/data/company/', proxy({target:'http://localhost:3002'}));
+app.use('/api/stockPricePoints/', proxy({target:'http://localhost:3002'}));
 app.use('/api/people-also-bought/', proxy({target:'http://localhost:3003'}));
 app.use('/api/sideBar/', proxy({target:'http://localhost:3004'}));
 

@@ -2,7 +2,7 @@ const express = require("express");
 const Router = express.Router();
 const Ctrl = require("../controllers/");
 
-Router.route("/:company_name")
+Router.route('/:company_name')
   .all((req, res, next) => {
     next();
   })
