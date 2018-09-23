@@ -17,14 +17,16 @@ const CompanyList = ({
       <div className={`clickers ${showLeft ? 'visible' : null}`}>
         <a href onClick={handleArrowClick} className="leftArrow"><i name="left" className="fas fa-angle-left" /></a>
       </div>
-      {companies.map((company, index) => (
+      {companies.map((company, index) => {
+        return (
         <Company
           company={company}
           price={currentPrices[index]}
           currentPercentage={currentPercentages[index]}
           marketisOpen={marketisOpen}
         />
-      ))}
+      )
+    })}
       <div className={`clickers ${showRight ? 'visible' : null}`}>
         <a href onClick={handleArrowClick} className="rightArrow"><i name="right" className="fas fa-angle-right" /></a>
       </div>

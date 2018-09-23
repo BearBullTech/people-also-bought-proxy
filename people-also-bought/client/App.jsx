@@ -14,14 +14,13 @@ class App extends React.Component {
       currentCompanies: [],
       currentPrices: [],
       currentPercentages: [],
-      min: 1,
-      max: 8,
       marketisOpen: true,
       showRight: true,
       showLeft: false,
+      ticker: 1,
     };
-    this.getRandomIntInclusive = this.getRandomIntInclusive.bind(this);
     this.handleArrowClick = this.handleArrowClick.bind(this);
+    this.updateData = this.updateData.bind(this);
   }
 
   componentDidMount() {
@@ -35,9 +34,7 @@ class App extends React.Component {
 
     axios.get(`/api/people-also-bought${location.pathname}`)
       .then((res) => {
-        function percentDiff(priceOne, priceTwo) {
-          return (((priceTwo - priceOne) / priceOne) * 100);
-        }
+        const percentDiff = (priceOne, priceTwo) => (((priceTwo - priceOne) / priceOne) * 100);
         this.setState({
           companies: res.data,
           currentCompanies: res.data.slice(0, 4),
@@ -47,6 +44,7 @@ class App extends React.Component {
             res.data[2].currentDay[0].currentPrice,
             res.data[3].currentDay[0].currentPrice,
           ],
+
           currentPercentages: [
             percentDiff(res.data[0].currentDay[0].currentPrice,
               res.data[0].currentDay[1].currentPrice).toFixed(2),
@@ -75,11 +73,9 @@ class App extends React.Component {
     const { currentCompanies } = this.state;
     const thisFunc = this;
 
-    function percentDiff(priceOne, priceTwo) {
-      return (((priceTwo - priceOne) / priceOne) * 100);
-    }
+    const percentDiff = (priceOne, priceTwo) => (((priceTwo - priceOne) / priceOne) * 100);
 
-    function theLoop(i) {
+    const theLoop = (i) => {
       setTimeout(() => {
         const time = moment();
         const isOpen = moment('9:00', 'hh:mm');
@@ -87,6 +83,7 @@ class App extends React.Component {
         const marketisOpen = (time.isBetween(isOpen, isClosed));
 
         thisFunc.setState({
+          ticker: i,
           currentPrices: [
             currentCompanies[0].currentDay[i].currentPrice,
             currentCompanies[1].currentDay[i].currentPrice,
@@ -109,34 +106,62 @@ class App extends React.Component {
           theLoop(i);
         }
       }, 10000);
-    }
+    };
     theLoop(1);
   }
 
   handleArrowClick(e) {
-    const { showLeft, showRight, companies } = this.state;
+    const {
+      showLeft, showRight, companies, ticker,
+    } = this.state;
+
     const arrow = e.target.getAttribute('name');
+    let updatedState = {};
+    let nextCurrentCompanies = [];
+
+    const percentDiff = (priceOne, priceTwo) => (((priceTwo - priceOne) / priceOne) * 100);
+
     if (!showLeft) {
-      this.setState({
+      nextCurrentCompanies = companies.slice(4, 8);
+      updatedState = {
         showLeft: true,
-        currentCompanies: companies.slice(4, 8),
-      });
+      };
     } else if (!showRight) {
-      this.setState({
+      nextCurrentCompanies = companies.slice(4, 8);
+      updatedState = {
         showRight: true,
-        currentCompanies: companies.slice(4, 8),
-      });
+      };
     } else if (arrow === 'left') {
-      this.setState({
+      nextCurrentCompanies = companies.slice(0, 4);
+      updatedState = {
         showLeft: false,
-        currentCompanies: companies.slice(0, 4),
-      });
+      };
     } else {
-      this.setState({
+      nextCurrentCompanies = companies.slice(8, 12);
+      updatedState = {
         showRight: false,
-        currentCompanies: companies.slice(8, 12),
-      });
+      };
     }
+    this.setState({
+      ...updatedState,
+      currentCompanies: nextCurrentCompanies,
+      currentPrices: [
+        nextCurrentCompanies[0].currentDay[ticker].currentPrice,
+        nextCurrentCompanies[1].currentDay[ticker].currentPrice,
+        nextCurrentCompanies[2].currentDay[ticker].currentPrice,
+        nextCurrentCompanies[3].currentDay[ticker].currentPrice,
+      ],
+      currentPercentages: [
+        percentDiff(nextCurrentCompanies[0].currentDay[0].currentPrice,
+          nextCurrentCompanies[0].currentDay[ticker].currentPrice).toFixed(2),
+        percentDiff(nextCurrentCompanies[1].currentDay[0].currentPrice,
+          nextCurrentCompanies[1].currentDay[ticker].currentPrice).toFixed(2),
+        percentDiff(nextCurrentCompanies[2].currentDay[0].currentPrice,
+          nextCurrentCompanies[2].currentDay[ticker].currentPrice).toFixed(2),
+        percentDiff(nextCurrentCompanies[3].currentDay[0].currentPrice,
+          nextCurrentCompanies[3].currentDay[ticker].currentPrice).toFixed(2),
+      ],
+    });
   }
 
   render() {
