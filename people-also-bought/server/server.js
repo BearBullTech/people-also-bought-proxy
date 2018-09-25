@@ -7,7 +7,7 @@ require('dotenv').config();
 const Company = require('../database/index.js');
 const handleListen = require('./handleListen.js');
 
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, (err) => {
+mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/people-also-bought', { useNewUrlParser: true }, (err) => {
   console.log(err || 'MongoDB connected');
 });
 
